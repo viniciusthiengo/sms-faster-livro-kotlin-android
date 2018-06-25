@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity
 import android.telephony.SmsManager
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
@@ -17,6 +16,15 @@ import pub.devrel.easypermissions.EasyPermissions
 
 class MainActivity : AppCompatActivity(), TextWatcher, EasyPermissions.PermissionCallbacks {
 
+    /*
+     * Para trabalharmos com constante em Kotlin. Ou é definida em alto nível,
+     * fora de classe, ou em um object (como abaixo).
+     * */
+    companion object {
+        const val SMS_AND_PHONE_STATE_REQUEST_CODE = 2256 // Inteiro aleatório
+    }
+
+
     override fun onCreate( savedInstanceState: Bundle? ) {
         super.onCreate( savedInstanceState )
         setContentView( R.layout.activity_main )
@@ -25,9 +33,12 @@ class MainActivity : AppCompatActivity(), TextWatcher, EasyPermissions.Permissio
     }
 
 
-    // Para contador de caracteres no campo de mensagem.
-    override fun onTextChanged( text: CharSequence?, start: Int, before: Int, count: Int ) {
-        tv_counter.text = String.format( "%d / %s", count, getString( R.string.max ) )
+    /*
+     * Para que seja possível contar os caracteres do campo de
+     * mensagem e então atualizar o contador em tela.
+     * */
+    override fun onTextChanged( text: CharSequence, start: Int, before: Int, count: Int ) {
+        tv_counter.text = String.format( "%d / %s", text.length, getString( R.string.max ) )
     }
     override fun afterTextChanged(p0: Editable?) {}
     override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
@@ -39,25 +50,35 @@ class MainActivity : AppCompatActivity(), TextWatcher, EasyPermissions.Permissio
     }
 
 
-    // Para envio de SMS.
+    /*
+     * Listener de clique do botão enviar que na verdade iniciará
+     * solicitando as permissões necessárias.
+     * */
     fun sendSMS( view: View ){
         EasyPermissions
             .requestPermissions(
                 this,
                 getString( R.string.rationale_sms_phone_state_permissions ),
                 SMS_AND_PHONE_STATE_REQUEST_CODE,
-                Manifest.permission.SEND_SMS, Manifest.permission.READ_PHONE_STATE );
+                Manifest.permission.SEND_SMS,
+                Manifest.permission.READ_PHONE_STATE );
     }
 
+    /*
+     * Método de envio de SMS.
+     * */
     private fun sendSMS(){
         try {
+            val number = String.format("+%s%s%s", et_ddi.text, et_ddd.text, et_number.text)
+            val message = et_message.text.toString()
             val smsManager = SmsManager.getDefault()
+
             smsManager.sendTextMessage(
-                    "+5527997867327",
-                    null,
-                    "Teste app.",
-                    null,
-                    null )
+                    number,
+                null,
+                    message,
+                null,
+                null )
 
             toast( R.string.sms_sent_successful )
         }
@@ -67,6 +88,11 @@ class MainActivity : AppCompatActivity(), TextWatcher, EasyPermissions.Permissio
         }
     }
 
+
+    /*
+     * Método utilizado para encapsular todo o boilerplate code da
+     * API Toast.
+     * */
     private fun toast(messageId: Int){
         Toast
             .makeText(
@@ -82,14 +108,22 @@ class MainActivity : AppCompatActivity(), TextWatcher, EasyPermissions.Permissio
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
     }
 
+    /*
+     * Método de permissão(ões) negada(s). Neste caso passa por todo um algoritmo
+     * para saber qual mensagem apresentar e como apresenta-la de acordo
+     * com a permissão que foi negada e se o box "Não perguntar novamente"
+     * foi marcado.
+     * */
     override fun onPermissionsDenied( requestCode: Int, perms: MutableList<String> ) {
-        Log.i("LOG", "PERMS: $perms")
-
         var title = getString( R.string.title_needed_permission )
         lateinit var rationale: String
         lateinit var toast: String
         val permissions = mutableListOf<String>()
 
+        /*
+         * Obtendo as mensagens de razão e toast, título e permissões
+         * (negadas) corretas.
+         * */
         if( !EasyPermissions.hasPermissions(this, Manifest.permission.SEND_SMS)
                 && !EasyPermissions.hasPermissions(this, Manifest.permission.READ_PHONE_STATE) ){
 
@@ -104,15 +138,20 @@ class MainActivity : AppCompatActivity(), TextWatcher, EasyPermissions.Permissio
             toast = getString(R.string.toast_needed_sms_permission)
             permissions.add(Manifest.permission.SEND_SMS)
         }
-        else if( !EasyPermissions.hasPermissions(this, Manifest.permission.READ_PHONE_STATE) ){
+        else {
             rationale = getString(R.string.rationale_needed_phone_permission)
             toast = getString(R.string.toast_needed_phone_permission)
             permissions.add(Manifest.permission.READ_PHONE_STATE)
         }
 
+        /*
+         * É necessário obter somente as permissões negadas em permissions,
+         * pois caso contrário o box de AppSettingsDialog será apresentado
+         * mesmo quando o usuário não tenha marcado a opção "Não perguntar
+         * novamente".
+         * */
         if( EasyPermissions.somePermissionPermanentlyDenied(this, permissions) ){
             // Caso o "Não perguntar novamente" tenha sido marcado.
-
             AppSettingsDialog
                 .Builder(this)
                     .setTitle( title )
@@ -130,30 +169,33 @@ class MainActivity : AppCompatActivity(), TextWatcher, EasyPermissions.Permissio
         }
     }
 
+    /*
+     * Método (nativo) que contém o algoritmo responsável por apresentar uma
+     * mensagem ao usuário caso ainda falte (ou não) alguma permissão a ser
+     * concedida, isso depois da volta da área de configurações do aplicativo.
+     * */
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        Log.i("LOG", "onActivityResult($requestCode)")
 
         if( requestCode == AppSettingsDialog.DEFAULT_SETTINGS_REQ_CODE ){
-            var toastId = 0
+            var toastContent = R.string.toast_perms_granted
 
+            /*
+             * Escolhendo a mensagem correta a ser apresentada na API Toast
+             * caso alguma (ou ambas) permissão ainda não tenha sido fornecida.
+             * */
             if( !EasyPermissions.hasPermissions(this, Manifest.permission.SEND_SMS)
                     && !EasyPermissions.hasPermissions(this, Manifest.permission.READ_PHONE_STATE) ){
-
-                toastId = R.string.toast_perms_not_yet_granted
+                toastContent = R.string.toast_perms_not_yet_granted
             }
             else if( !EasyPermissions.hasPermissions(this, Manifest.permission.SEND_SMS) ){
-                toastId = R.string.toast_perm_sms_not_yet_granted
+                toastContent = R.string.toast_perm_sms_not_yet_granted
             }
             else if( !EasyPermissions.hasPermissions(this, Manifest.permission.READ_PHONE_STATE) ){
-                toastId = R.string.toast_perm_phone_not_yet_granted
+                toastContent = R.string.toast_perm_phone_not_yet_granted
             }
 
-            Log.i("LOG", "Toast: $toastId")
-
-            if( toastId != 0 ){
-                toast( toastId )
-            }
+            toast( toastContent )
         }
     }
 
@@ -163,11 +205,5 @@ class MainActivity : AppCompatActivity(), TextWatcher, EasyPermissions.Permissio
 
             sendSMS()
         }
-    }
-
-
-    // Necessário para trabalharmos com constante em Kotlin. Ou é definida em alto nível, fora de classe, ou em um object.
-    companion object {
-        const val SMS_AND_PHONE_STATE_REQUEST_CODE = 2256 // Inteniro aleatório
     }
 }

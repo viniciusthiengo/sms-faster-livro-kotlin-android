@@ -66,4 +66,7 @@
     <string name="toast_perm_phone_not_yet_granted">
         A permissão de \"Estado de Telefone\" ainda não foi concedida.
     </string>
+    <string name="toast_perms_granted">
+        Permissões concedidas. Realize o envio novamente.
+    </string>
 </resources>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE resources [
+    <!ENTITY max "160">
+]>
+<resources>
+    <string name="app_name">SMS Faster</string>
+
+    <string name="hint_ddi">DDI</string>
+    <string name="hint_ddd">DDD</string>
+    <string name="hint_number">Número</string>
+    <string name="hint_message">Mensagem</string>
+
+    <string name="desc_clean">Limpar campo de mensagem</string>
+
+    <string name="label_send">Enviar SMS</string>
+    <string name="label_counter">0 / &max;</string>
+    <string name="max">&max;</string>
+
+
+    <string name="rationale_sms_phone_state_permissions">
+        Para que o app funcione como esperado, as permissões de \"Envio de SMS\" e
+        de \"Estado de Telefone\" devem ser concedidas.
+    </string>
+
+    <string name="sms_sent_successful">Mensagem enviada com sucesso!</string>
+    <string name="sms_error">
+        Mensagem não enviada. Verifique se todos os campos foram preenchidos corretamente.
+    </string>
+
+    <string name="title_needed_permission">Permissão necessária</string>
+    <string name="title_needed_permissions">Permissões necessárias</string>
+
+    <string name="rationale_needed_permissions">
+        Este app não funcionará se as permissões de \"Envio de SMS\" e de \"Estado de
+        Telefone\" não forem concedidas. Entre nas configurações do aplicativo, acionando
+        \"Ok\", e libere-as.
+    </string>
+    <string name="rationale_needed_sms_permission">
+        Este app não funcionará se a permissão de \"Envio de SMS\" não for concedida.
+        Entre nas configurações do aplicativo, acionando \"Ok\", e libere-a.
+    </string>
+    <string name="rationale_needed_phone_permission">
+        Este app não funcionará se a permissão de \"Estado de Telefone\" não for
+        concedida. Entre nas configurações do aplicativo, acionando \"Ok\", e libere-a.
+    </string>
+
+    <string name="toast_needed_permissions">
+        Este app não funcionará se as permissões de \"Envio de SMS\" e de \"Estado de
+        Telefone\" não forem concedidas.
+    </string>
+    <string name="toast_needed_sms_permission">
+        Este app não funcionará se a permissão de \"Envio de SMS\" não for concedida.
+    </string>
+    <string name="toast_needed_phone_permission">
+        Este app não funcionará se a permissão de \"Estado de Telefone\" não for
+        concedida.
+    </string>
+
+    <string name="toast_perms_not_yet_granted">
+        As permissões de \"Envio de SMS\" e de \"Estado de Telefone\" ainda não foram
+        concedidas.
+    </string>
+    <string name="toast_perm_sms_not_yet_granted">
+        A permissão de \"Envio de SMS\" ainda não foi concedida.
+    </string>
+    <string name="toast_perm_phone_not_yet_granted">
+        A permissão de \"Estado de Telefone\" ainda não foi concedida.
+    </string>
+</resources>

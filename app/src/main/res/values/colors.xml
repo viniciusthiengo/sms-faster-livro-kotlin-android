@@ -4,6 +4,6 @@
     <color name="colorPrimaryDark">#00675B</color>
     <color name="colorAccent">#F57C00</color>
     <color name="colorStrokeField">#8492A6</color>
-    <color name="colorBtOrange">#FFF57C00</color>
-    <color name="colorBtRed">#F95F62</color>
+    <color name="colorButtonOrange">#FFF57C00</color>
+    <color name="colorButtonRed">#F95F62</color>
 </resources>

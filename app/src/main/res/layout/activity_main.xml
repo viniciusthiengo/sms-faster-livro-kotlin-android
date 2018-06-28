@@ -130,5 +130,4 @@
         android:text="@string/label_send"
         android:textAllCaps="false"
         android:textColor="@android:color/white" />
-
 </RelativeLayout>

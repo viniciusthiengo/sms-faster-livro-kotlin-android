@@ -2,7 +2,9 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
 
+    <!-- Cor de background. -->
     <solid android:color="@color/colorPrimaryDark" />
 
+    <!-- Nível de curvatura dos cantos da caixa retangular. -->
     <corners android:radius="3dp" />
 </shape>

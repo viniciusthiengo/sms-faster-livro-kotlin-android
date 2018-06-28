@@ -16,15 +16,14 @@
     <string name="label_counter">0 / &max;</string>
     <string name="max">&max;</string>
 
+    <string name="sms_sent_successfully">Mensagem enviada com sucesso!</string>
+    <string name="sms_error">
+        Mensagem não enviada. Verifique se todos os campos foram preenchidos corretamente.
+    </string>
 
     <string name="rationale_sms_phone_state_permissions">
         Para que o app funcione como esperado, as permissões de \"Envio de SMS\" e
         de \"Estado de Telefone\" devem ser concedidas.
-    </string>
-
-    <string name="sms_sent_successful">Mensagem enviada com sucesso!</string>
-    <string name="sms_error">
-        Mensagem não enviada. Verifique se todos os campos foram preenchidos corretamente.
     </string>
 
     <string name="title_needed_permission">Permissão necessária</string>

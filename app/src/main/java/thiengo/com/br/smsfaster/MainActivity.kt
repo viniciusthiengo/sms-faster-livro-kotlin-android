@@ -24,14 +24,12 @@ class MainActivity : AppCompatActivity(), TextWatcher, EasyPermissions.Permissio
         const val SMS_AND_PHONE_STATE_REQUEST_CODE = 2256 // Inteiro aleatório
     }
 
-
     override fun onCreate( savedInstanceState: Bundle? ) {
         super.onCreate( savedInstanceState )
         setContentView( R.layout.activity_main )
 
         et_message.addTextChangedListener( this )
     }
-
 
     /*
      * Para que seja possível contar os caracteres do campo de
@@ -49,11 +47,10 @@ class MainActivity : AppCompatActivity(), TextWatcher, EasyPermissions.Permissio
         et_message.text.clear()
     }
 
-
     /*
-     * Listener de clique do botão enviar que na verdade iniciará
-     * solicitando as permissões necessárias.
-     * */
+	 * Listener de clique, do botão Enviar SMS, que na verdade iniciará
+	 * solicitando as permissões necessárias.
+	 * */
     fun sendSMS( view: View ){
         EasyPermissions
             .requestPermissions(
@@ -61,11 +58,11 @@ class MainActivity : AppCompatActivity(), TextWatcher, EasyPermissions.Permissio
                 getString( R.string.rationale_sms_phone_state_permissions ),
                 SMS_AND_PHONE_STATE_REQUEST_CODE,
                 Manifest.permission.SEND_SMS,
-                Manifest.permission.READ_PHONE_STATE );
+                Manifest.permission.READ_PHONE_STATE )
     }
 
     /*
-     * Método de envio de SMS.
+     * Método de envio de SMS via SmsManager.
      * */
     private fun sendSMS(){
         try {
@@ -80,14 +77,13 @@ class MainActivity : AppCompatActivity(), TextWatcher, EasyPermissions.Permissio
                 null,
                 null )
 
-            toast( R.string.sms_sent_successful )
+            toast( R.string.sms_sent_successfully )
         }
-        catch (ex: Exception) {
-            ex.printStackTrace()
+        catch (e: Exception) {
+            e.printStackTrace()
             toast( R.string.sms_error )
         }
     }
-
 
     /*
      * Método utilizado para encapsular todo o boilerplate code da
@@ -102,26 +98,27 @@ class MainActivity : AppCompatActivity(), TextWatcher, EasyPermissions.Permissio
             .show()
     }
 
-
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        // Enviando a resposta do usuário para a API EasyPermissions.
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
     }
 
     /*
      * Método de permissão(ões) negada(s). Neste caso passa por todo um algoritmo
      * para saber qual mensagem apresentar e como apresenta-la de acordo
-     * com a permissão que foi negada e se o box "Não perguntar novamente"
+     * com a permissão, além de verificar se o box "Não perguntar novamente"
      * foi marcado.
      * */
     override fun onPermissionsDenied( requestCode: Int, perms: MutableList<String> ) {
         var title = getString( R.string.title_needed_permission )
         lateinit var rationale: String
-        lateinit var toast: String
+        val toastContentId: Int
         val permissions = mutableListOf<String>()
 
         /*
-         * Obtendo as mensagens de razão e toast, título e permissões
+         * Obtendo as mensagens de razão e de toast, o título e as permissões
          * (negadas) corretas.
          * */
         if( !EasyPermissions.hasPermissions(this, Manifest.permission.SEND_SMS)
@@ -129,26 +126,25 @@ class MainActivity : AppCompatActivity(), TextWatcher, EasyPermissions.Permissio
 
             title = getString( R.string.title_needed_permissions )
             rationale = getString(R.string.rationale_needed_permissions)
-            toast = getString(R.string.toast_needed_permissions)
+            toastContentId = R.string.toast_needed_permissions
             permissions.add(Manifest.permission.SEND_SMS)
             permissions.add(Manifest.permission.READ_PHONE_STATE)
         }
         else if( !EasyPermissions.hasPermissions(this, Manifest.permission.SEND_SMS) ){
             rationale = getString(R.string.rationale_needed_sms_permission)
-            toast = getString(R.string.toast_needed_sms_permission)
+            toastContentId = R.string.toast_needed_sms_permission
             permissions.add(Manifest.permission.SEND_SMS)
         }
         else {
             rationale = getString(R.string.rationale_needed_phone_permission)
-            toast = getString(R.string.toast_needed_phone_permission)
+            toastContentId = R.string.toast_needed_phone_permission
             permissions.add(Manifest.permission.READ_PHONE_STATE)
         }
 
         /*
-         * É necessário obter somente as permissões negadas em permissions,
-         * pois caso contrário o box de AppSettingsDialog será apresentado
-         * mesmo quando o usuário não tenha marcado a opção "Não perguntar
-         * novamente".
+         * É necessário obter, na propriedade permissions, somente as permissões negadas,
+         * pois caso contrário a caixa de diálogo de AppSettingsDialog será apresentada
+         * mesmo quando o usuário não tiver marcado a opção "Não perguntar novamente".
          * */
         if( EasyPermissions.somePermissionPermanentlyDenied(this, permissions) ){
             // Caso o "Não perguntar novamente" tenha sido marcado.
@@ -160,25 +156,36 @@ class MainActivity : AppCompatActivity(), TextWatcher, EasyPermissions.Permissio
                     .show()
         }
         else{
-            Toast
-                .makeText(
-                    applicationContext,
-                    toast,
-                    Toast.LENGTH_LONG )
-                .show()
+            /*
+             * Para qualquer permissão negada, porém onde nenhuma delas tenha
+             * sido marcada como “Não perguntar novamente”.
+             * */
+            toast( toastContentId )
+        }
+    }
+
+    override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>) {
+        /*
+		 * Com as duas permissões concedidas, invoque o método sendSMS()
+		 * que contém o SmsManager.
+		 * */
+        if( EasyPermissions.hasPermissions(this, Manifest.permission.SEND_SMS)
+                && EasyPermissions.hasPermissions(this, Manifest.permission.READ_PHONE_STATE) ){
+
+            sendSMS() // Sobrecarga contendo SmsManager.
         }
     }
 
     /*
      * Método (nativo) que contém o algoritmo responsável por apresentar uma
      * mensagem ao usuário caso ainda falte (ou não) alguma permissão a ser
-     * concedida, isso depois da volta da área de configurações do aplicativo.
+     * concedida, isso depois da volta do acionamento de AppSettingsDialog.
      * */
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
         if( requestCode == AppSettingsDialog.DEFAULT_SETTINGS_REQ_CODE ){
-            var toastContent = R.string.toast_perms_granted
+            var toastContentId = R.string.toast_perms_granted
 
             /*
              * Escolhendo a mensagem correta a ser apresentada na API Toast
@@ -186,24 +193,16 @@ class MainActivity : AppCompatActivity(), TextWatcher, EasyPermissions.Permissio
              * */
             if( !EasyPermissions.hasPermissions(this, Manifest.permission.SEND_SMS)
                     && !EasyPermissions.hasPermissions(this, Manifest.permission.READ_PHONE_STATE) ){
-                toastContent = R.string.toast_perms_not_yet_granted
+                toastContentId = R.string.toast_perms_not_yet_granted
             }
             else if( !EasyPermissions.hasPermissions(this, Manifest.permission.SEND_SMS) ){
-                toastContent = R.string.toast_perm_sms_not_yet_granted
+                toastContentId = R.string.toast_perm_sms_not_yet_granted
             }
             else if( !EasyPermissions.hasPermissions(this, Manifest.permission.READ_PHONE_STATE) ){
-                toastContent = R.string.toast_perm_phone_not_yet_granted
+                toastContentId = R.string.toast_perm_phone_not_yet_granted
             }
 
-            toast( toastContent )
-        }
-    }
-
-    override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>) {
-        if( EasyPermissions.hasPermissions(this, Manifest.permission.SEND_SMS)
-            && EasyPermissions.hasPermissions(this, Manifest.permission.READ_PHONE_STATE) ){
-
-            sendSMS()
+            toast( toastContentId )
         }
     }
 }

@@ -109,6 +109,7 @@ class MainActivity : AppCompatActivity(), TextWatcher, EasyPermissions.Permissio
      * foi marcado para assim acionar ou não o AppSettingsDialog.
      * */
     override fun onPermissionsDenied( requestCode: Int, perms: MutableList<String> ) {
+
         var title = getString( R.string.title_needed_permission )
         val rationale: String
         val toastContentId: Int

@@ -15,7 +15,6 @@ import pub.devrel.easypermissions.EasyPermissions
 
 
 class MainActivity : AppCompatActivity(), TextWatcher, EasyPermissions.PermissionCallbacks {
-
     /*
      * Para trabalharmos com constante em Kotlin. Ou é definida em alto nível,
      * fora de classe, ou em um object (como abaixo).

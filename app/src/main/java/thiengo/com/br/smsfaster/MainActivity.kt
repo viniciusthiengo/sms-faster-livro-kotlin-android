@@ -61,9 +61,7 @@ class MainActivity : AppCompatActivity(), TextWatcher, EasyPermissions.Permissio
                 Manifest.permission.READ_PHONE_STATE )
     }
 
-    /*
-     * Método de envio de SMS via SmsManager.
-     * */
+    // Listener de clique, método de envio de SMS.
     private fun sendSMS(){
         try {
             val number = String.format("+%s%s%s", et_ddi.text, et_ddd.text, et_number.text)
@@ -109,11 +107,11 @@ class MainActivity : AppCompatActivity(), TextWatcher, EasyPermissions.Permissio
      * Método de permissão(ões) negada(s). Neste caso passa por todo um algoritmo
      * para saber qual mensagem apresentar e como apresenta-la de acordo
      * com a permissão, além de verificar se o box "Não perguntar novamente"
-     * foi marcado.
+     * foi marcado para assim acionar ou não o AppSettingsDialog.
      * */
     override fun onPermissionsDenied( requestCode: Int, perms: MutableList<String> ) {
         var title = getString( R.string.title_needed_permission )
-        lateinit var rationale: String
+        val rationale: String
         val toastContentId: Int
         val permissions = mutableListOf<String>()
 

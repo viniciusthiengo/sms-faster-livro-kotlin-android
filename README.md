@@ -20,7 +20,7 @@ O processo de migração é bem simples e pode ser seguido no tutorial a seguir:
 
 ### Todos os projetos do livro
 
-Todos os repositórios dos projetos Android de exemplo do livro estão listados a seguir:
+Todos os repositórios dos projetos Kotlin Android de exemplo do livro estão listados a seguir:
 
 1. Capítulo 1 ➙ [Simples e Robusto Roteiro Para Permissões Perigosas](https://github.com/viniciusthiengo/sms-faster-livro-kotlin-android);
 2. Capítulo 2 ➙ [Picasso Para Carregamento e Atualização Eficientes de Imagens](https://github.com/viniciusthiengo/pablo-picasso-livro-kotlin-android);
@@ -36,7 +36,7 @@ Todos os repositórios dos projetos Android de exemplo do livro estão listados 
 12. Capítulo 12 ➙ [Leitor de PDF](https://github.com/viniciusthiengo/dot-documentacoes-livro-kotlin-android);
 13. Capítulo 13 ➙ [Leitura de Códigos com Barcode Scanner](https://github.com/viniciusthiengo/bar-code-leitor-livro-kotlin-android);
 14. Apêndice D ➙ [Kotlin](https://github.com/viniciusthiengo/palindromo-livro-kotlin-android);
-15. Apêndice E ➙ [Um pouco mais do Kotlin](https://github.com/viniciusthiengo/carros-a-venda-livro-kotlin-android);
+15. Apêndice E ➙ [Um pouco mais do Kotlin](https://github.com/viniciusthiengo/carros-a-venda-livro-kotlin-android).
 
 ## Dados livro
 

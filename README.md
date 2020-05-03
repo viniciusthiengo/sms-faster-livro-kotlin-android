@@ -18,6 +18,13 @@ Migre assim que o finalizado em sua própria instalação do Android Studio IDE.
 
 O processo de migração é bem simples e pode ser seguido no tutorial a seguir: [Migrar para o AndroidX](https://developer.android.com/jetpack/androidx/migrate?hl=pt-br).
 
+### Todos os projetos do livro
+
+Todos os repositórios dos projetos Android de exemplo do livro estão listados a seguir:
+
+1. Capítulo 1 [Simples e Robusto Roteiro Para Permissões Perigosas](https://github.com/viniciusthiengo/sms-faster-livro-kotlin-android);
+2. Capítulo 2 [Picasso Para Carregamento e Atualização Eficientes de Imagens](https://github.com/viniciusthiengo/pablo-picasso-livro-kotlin-android);
+
 ## Dados livro
 
 "Desenvolvedor Kotlin Android - Bibliotecas para o dia a dia"

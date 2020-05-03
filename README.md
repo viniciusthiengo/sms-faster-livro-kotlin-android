@@ -10,7 +10,7 @@ Projeto apresentado no **Capítulo 1** do livro, mais precisamente o capítulo "
 
 ### AndroidX ⚠
 
-O projeto Android deste repositório, apesar de estar ainda autal e rodando sem problemas.
+O projeto Android deste repositório, apesar de estar ainda atual e rodando sem problemas.
 
 Apesar disso é aconselhável que o desenvolvedor (leitor) migre o projeto para o AndroidX.
 
@@ -20,7 +20,7 @@ O processo de migração é bem simples e pode ser seguido no tutorial a seguir:
 
 ## Dados livro
 
-"Desenvolvedor Kotlin Android - Bibliotecas para o dia a dia" - 1ª edição
+"Desenvolvedor Kotlin Android - Bibliotecas para o dia a dia"
 
 **Autor:** Vinícius Thiengo
 

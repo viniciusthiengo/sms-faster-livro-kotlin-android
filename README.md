@@ -4,7 +4,7 @@ Projeto Kotlin Android do livro "Desenvolvedor Kotlin Android - Bibliotecas para
 
 Projeto apresentado no **Capítulo 1** do livro, mais precisamente o capítulo "Simples e Robusto Roteiro Para Permissões Perigosas".
 
-<img src="https://www.thiengo.com.br/img/livro/desenvolvedor-kotlin-android-bibliotecas-para-o-dia-a-dia/github/aplicativo-capitulo-01.jpg" alt="Aplicativo do capítulo 1" height="360">
+<img src="https://www.thiengo.com.br/img/livro/desenvolvedor-kotlin-android-bibliotecas-para-o-dia-a-dia/github/aplicativo-capitulo-01.jpg" alt="Telas do aplicativo do capítulo 1" height="360">
 
 **Observação importante:** para o total entendimento do projeto é preciso ter em mãos o livro "Desenvolvedor Kotlin Android" com o capítulo 1 já aberto, pois as explicações detalhadas de todo o projeto deste repositório estarão nesta parte do livro.
 
